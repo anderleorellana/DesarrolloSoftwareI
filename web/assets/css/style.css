@@ -1,0 +1,26 @@
+.nav-item a,
+.nav-item a i {
+  color: white !important;
+}
+
+.nav-item .nav-link:hover,
+.nav-item .nav-link:hover i {
+  color: #ec820a !important;
+}
+
+.n-active a,
+.n-active a i {
+  color: #ec820a !important;
+}
+.collapse-item{
+    color: #2c2c2c !important;
+}
+
+.collapse-item:hover {
+  color: #2c2c2c !important;
+  background-color: whitesmoke !important;
+}
+.dropdown-menu .dropdown-item,
+.dropdown-menu .dropdown-item i {
+  color: #3a3b45 !important;
+}
