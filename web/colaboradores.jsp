@@ -5,7 +5,17 @@
     if (emp == null) {
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
-
+    
+    Cookie[] cookies = request.getCookies();
+    String mensaje = "";
+    for (Cookie cooky : cookies) {
+        if (cooky.getName().equals("cookieM")) {
+            System.out.println("Asignado");
+            mensaje = cooky.getValue();
+        } else {
+            System.out.println("No Asignado");
+        }
+    }
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -266,7 +276,7 @@
                                         data-toggle="modal" data-target="#AddEmpleadoModal">Agregar</button>
                             </div>
                         </div>
-                        <div id="mensaje" ></div>
+                        
                         <!-- Modal -->
                         <div class="modal fade" id="AddEmpleadoModal" tabindex="-1" role="dialog"
                              aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -280,34 +290,34 @@
                                     </div>
 
                                     <form action="EmpleadoServlet" method="get">
-                                        <input type="hidden" name="op1" id="operacion" value="Add">
+                                        <input type="hidden" name="op" id="operacion" value="Add">
                                         <div class="modal-body">
                                             <div class="form-group">
-                                                <input type="text" name="txtNombres1" id="Idnombres" class="form-control" placeholder="Nombres"
+                                                <input type="text" name="txtNombres" id="Idnombres" class="form-control" placeholder="Nombres"
                                                        required>
                                             </div>
                                             <div class="form-group">
-                                                <input type="text" name="txtApellidos1" id="Idapellidos" class="form-control" placeholder="Apellidos"
+                                                <input type="text" name="txtApellidos" id="Idapellidos" class="form-control" placeholder="Apellidos"
                                                        required>
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group col">
-                                                    <input type="text" name="txtDNI1" id="Idnumdoc" class="form-control" placeholder="N° Documento"
+                                                    <input type="text" name="txtDNI" id="Idnumdoc" class="form-control" placeholder="N° Documento"
                                                            required>
                                                 </div>
                                                 <div class="form-group col">
-                                                    <input type="text" name="txtCelular1" id="Idcelular" class="form-control" placeholder="N° Celular"
+                                                    <input type="text" name="txtCelular" id="Idcelular" class="form-control" placeholder="N° Celular"
                                                            required>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
-                                                <input type="text" name="txtDireccion1" id="Iddireccion" class="form-control" placeholder="Direccion"
+                                                <input type="text" name="txtDireccion" id="Iddireccion" class="form-control" placeholder="Direccion"
                                                        required>
                                             </div>
 
                                             <div class="form-group">
-                                                <select name="txtArea1" id="Idarea" class="form-control" required>
+                                                <select name="txtArea" id="Idarea" class="form-control" required>
                                                     <option selected disabled>- Area -</option>
                                                     <option value="101">Administracion</option>
                                                     <option value="102">Ventas</option>
@@ -326,7 +336,9 @@
                                 </div>
                             </div>
                         </div>
-
+                        
+                        <div id="mensaje" ><%=(mensaje=="")?"":mensaje%></div>
+                        
                         <!-- DataTales Example -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
@@ -395,35 +407,35 @@
                                                         </button>
                                                     </div>
                                                     <form action="EmpleadoServlet" method="get">
-                                                        <input type="hidden" name="op" value="Modify">
-                                                        <input type="hidden" name="txtCodEmpleado" value="<%=empleado.getCodEmpleado()%>">
+                                                        <input type="hidden" name="op" id="Moperacion" value="Modify">
+                                                        <input type="hidden" name="txtCodEmpleado" id="Idcodempleado" value="<%=empleado.getCodEmpleado()%>">
                                                         <div class="modal-body">
                                                             <div class="form-group">
-                                                                <input type="text" name="txtmNombres" value="<%=empleado.getNombre()%>" class="form-control" placeholder="Nombres"
+                                                                <input type="text" name="txtmNombres" id="IdMnombres" value="<%=empleado.getNombre()%>" class="form-control" placeholder="Nombres"
                                                                        required>
                                                             </div>
                                                             <div class="form-group">
-                                                                <input type="text" name="txtmApellidos" value="<%=empleado.getApellidos()%>" class="form-control" placeholder="Apellidos"
+                                                                <input type="text" name="txtmApellidos" id="IdMapellidos" value="<%=empleado.getApellidos()%>" class="form-control" placeholder="Apellidos"
                                                                        required>
                                                             </div>
                                                             <div class="form-row">
                                                                 <div class="form-group col">
-                                                                    <input type="text" name="txtmDNI" value="<%=empleado.getDNI()%>" class="form-control" placeholder="N° Documento"
+                                                                    <input type="text" name="txtmDNI" id="IdMnumdoc" value="<%=empleado.getDNI()%>" class="form-control" placeholder="N° Documento"
                                                                            required>
                                                                 </div>
                                                                 <div class="form-group col">
-                                                                    <input type="text" name="txtmCelular" value="<%=empleado.getCelular()%>" class="form-control" placeholder="N° Celular"
+                                                                    <input type="text" name="txtmCelular" id="IdMcelular" value="<%=empleado.getCelular()%>" class="form-control" placeholder="N° Celular"
                                                                            required>
                                                                 </div>
                                                             </div>
 
                                                             <div class="form-group">
-                                                                <input type="text" name="txtmDireccion" value="<%=empleado.getDireccion()%>" class="form-control" placeholder="Direccion"
+                                                                <input type="text" name="txtmDireccion" id="IdMdireccion" value="<%=empleado.getDireccion()%>" class="form-control" placeholder="Direccion"
                                                                        required>
                                                             </div>
 
                                                             <div class="form-group">
-                                                                <select id="Area" name="txtmArea" class="form-control" required>
+                                                                <select name="txtmArea" id="IdMarea" class="form-control" required>
                                                                     <option disabled>- Area -</option>
                                                                     <option <%=(empleado.getArea().equals("Administracion")) ? "selected" : ""%> value="101">Administracion</option>
                                                                     <option <%=(empleado.getArea().equals("Ventas")) ? "selected" : ""%> value="102">Ventas</option>
@@ -436,7 +448,7 @@
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-danger"
                                                                     data-dismiss="modal">Cerrar</button>
-                                                            <input type="submit" class="btn btn-success" value="Agregar Colaborador">
+                                                            <input type="submit" class="btn btn-success" id="btnModColaborador" value="Modificar Colaborador">
                                                         </div>
                                                     </form>
                                                 </div>
@@ -519,6 +531,7 @@
         <!--<script src="assets/js/ajax.js"></script>-->
 
         <script>
+            
             $(btnAddColaborador).click(agregarEmpleado);
             function agregarEmpleado(e) {
                 //parar el submit del formulario
@@ -540,6 +553,7 @@
                     }
                 });
             }
+            
         </script>
 
     </body>

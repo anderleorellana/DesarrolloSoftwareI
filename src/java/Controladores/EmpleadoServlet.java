@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import Negocio.Empleado;
 import DAO.EmpleadoDAO;
 import java.util.ArrayList;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -35,31 +36,32 @@ public class EmpleadoServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
+
         Empleado empleado;
-        
+
         String op = request.getParameter("op");
-        
+
         EmpleadoDAO empDAO = new EmpleadoDAO();
-        
-        switch (op){
+
+        switch (op) {
             case "Viewer":
-                
+
                 ArrayList<Empleado> lista = empDAO.getListEmpleado();
                 request.setAttribute("lemp", lista);
 
                 request.getRequestDispatcher("colaboradores.jsp").forward(request, response);
-                
+
                 break;
+
             case "Modify":
-                
+
                 int codEmpleado = Integer.parseInt(request.getParameter("txtCodEmpleado"));
                 String mnombres = request.getParameter("txtmNombres");
                 String mapellidos = request.getParameter("txtmApellidos");
@@ -67,7 +69,7 @@ public class EmpleadoServlet extends HttpServlet {
                 String mcelular = request.getParameter("txtmCelular");
                 String mdireccion = request.getParameter("txtmDireccion");
                 int mcodArea = Integer.parseInt(request.getParameter("txtmArea"));
-                
+
                 empleado = new Empleado();
                 empleado.setCodEmpleado(codEmpleado);
                 empleado.setNombre(mnombres);
@@ -76,33 +78,48 @@ public class EmpleadoServlet extends HttpServlet {
                 empleado.setCelular(mcelular);
                 empleado.setDireccion(mdireccion);
                 empleado.setCodArea(mcodArea);
-                
-                empDAO.editarEmpleado(empleado);
-                
-                request.getRequestDispatcher("EmpleadoServlet?op=Viewer").forward(request, response);
-                
+
+                if (empDAO.verificarColaboradorModificado(empleado)) {
+
+                    empDAO.editarEmpleado(empleado);
+                    
+                    response.sendRedirect("EmpleadoServlet?op=Viewer");
+                    //request.getRequestDispatcher("EmpleadoServlet?op=Viewer").forward(request, response);
+
+                } else {
+
+                    Cookie cookieMensaje = new Cookie("cookieM", empDAO.Alert("error", "Colaborador Existente", "El DNI introducido ya se encuenta en uso"));
+                    cookieMensaje.setMaxAge(1);
+                    response.addCookie(cookieMensaje);
+                    response.sendRedirect("EmpleadoServlet?op=Viewer");
+                    //request.getRequestDispatcher("EmpleadoServlet?op=Viewer").forward(request, response);
+
+                }
+
                 break;
+
             case "Remove":
-                
+
                 int rcod = Integer.parseInt(request.getParameter("codEmpleado"));
-                
+
                 empleado = new Empleado();
                 empleado.setCodEmpleado(rcod);
-                
+
                 empDAO.eliminarEmpleado(empleado);
-                
+
                 request.getRequestDispatcher("EmpleadoServlet?op=Viewer").forward(request, response);
-                
+
                 break;
+
             case "Add":
-                
+
                 String nombres = request.getParameter("txtNombres");
                 String apellidos = request.getParameter("txtApellidos");
                 String dni = request.getParameter("txtDNI");
                 String celular = request.getParameter("txtCelular");
                 String direccion = request.getParameter("txtDireccion");
                 int codArea = Integer.parseInt(request.getParameter("txtArea"));
-                
+
                 empleado = new Empleado();
                 empleado.setNombre(nombres);
                 empleado.setApellidos(apellidos);
@@ -110,27 +127,27 @@ public class EmpleadoServlet extends HttpServlet {
                 empleado.setCelular(celular);
                 empleado.setDireccion(direccion);
                 empleado.setCodArea(codArea);
-                
+
                 try (PrintWriter out = response.getWriter()) {
-                    
+
                     if (empDAO.verificarColaborador(empleado)) {
                         empDAO.agregarEmpleado(empleado);
-                
+
                         out.println("<script>"
-                                    + "location.href=\"EmpleadoServlet?op=Viewer\";"
-                                    + "</script>");
-                    }else{
+                                + "location.href=\"EmpleadoServlet?op=Viewer\";"
+                                + "</script>");
+                    } else {
                         response.setContentType("text/html;charset=UTF-8");
                         out.println(empDAO.Alert("error", "Colaborador Existente", "El DNI introducido ya se encuenta en uso"));
                     }
-                    
+
                 } catch (Exception e) {
                     System.out.println(e);
                 }
 
                 break;
         }
-        
+
     }
 
     @Override

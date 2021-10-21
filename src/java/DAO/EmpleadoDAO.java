@@ -1,4 +1,3 @@
-
 package DAO;
 
 import Negocio.Empleado;
@@ -17,7 +16,7 @@ public class EmpleadoDAO {
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             emp.setEmail("false");
-            while (rs.next()) {                
+            while (rs.next()) {
                 emp.setCodEmpleado(rs.getInt(1));
                 emp.setCodArea(rs.getInt(2));
                 emp.setNombre(rs.getString(3));
@@ -27,15 +26,16 @@ public class EmpleadoDAO {
                 emp.setCelular(rs.getString(8));
                 emp.setDireccion(rs.getString(9));
             }
-            
+
         } catch (Exception e) {
             System.out.println(e);
         }
         return emp;
     }
-    public String  Alert(String icon, String titulo, String texto){
-        String alert="";
-        alert = "<script> Swal.fire({  icon: '"+icon+"',  title: '"+titulo+"',  text: '"+texto+"!' })</script>";
+
+    public String Alert(String icon, String titulo, String texto) {
+        String alert = "";
+        alert = "<script> Swal.fire({  icon: '" + icon + "',  title: '" + titulo + "',  text: '" + texto + "!' })</script>";
         return alert;
     }
 
@@ -44,8 +44,8 @@ public class EmpleadoDAO {
         try {
             PreparedStatement ps = Conexion.getConnection().prepareStatement("select * from view_empleado");
             ResultSet rs = ps.executeQuery();
-            
-            while (rs.next()) {                
+
+            while (rs.next()) {
                 Empleado empleado = new Empleado();
                 empleado.setCodEmpleado(rs.getInt(1));
                 empleado.setNombre(rs.getString(2));
@@ -55,11 +55,10 @@ public class EmpleadoDAO {
                 empleado.setCelular(rs.getString(6));
                 empleado.setArea(rs.getString(7));
                 empleado.setDireccion(rs.getString(8));
-                
+
                 lista.add(empleado);
             }
-            
-            
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -74,13 +73,13 @@ public class EmpleadoDAO {
             ps.setString(2, empleado.getNombre());
             ps.setString(3, empleado.getApellidos());
             ps.setString(4, empleado.getDNI());
-            ps.setString(5, empleado.getDNI()+"@agroalexis.com");
+            ps.setString(5, empleado.getDNI() + "@agroalexis.com");
             ps.setString(6, empleado.getDNI());
             ps.setString(7, empleado.getCelular());
             ps.setString(8, empleado.getDireccion());
-            
+
             ps.executeUpdate();
-            
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -95,12 +94,12 @@ public class EmpleadoDAO {
             ps.setString(4, empleado.getCelular());
             ps.setString(5, empleado.getDireccion());
             ps.setInt(6, empleado.getCodArea());
-            ps.setString(7, empleado.getDNI()+"@agroalexis.com");
+            ps.setString(7, empleado.getDNI() + "@agroalexis.com");
             ps.setString(8, empleado.getDNI());
             ps.setInt(9, empleado.getCodEmpleado());
-            
+
             ps.executeUpdate();
-            
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -110,9 +109,9 @@ public class EmpleadoDAO {
         try {
             PreparedStatement ps = Conexion.getConnection().prepareStatement("Delete from empleado where CodEmpleado=?");
             ps.setInt(1, empleado.getCodEmpleado());
-            
+
             ps.executeUpdate();
-            
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -120,7 +119,7 @@ public class EmpleadoDAO {
 
     public boolean verificarColaborador(Empleado empleado) {
         boolean verificar = true;
-            
+
         try {
             PreparedStatement ps = Conexion.getConnection().prepareStatement("Select * from empleado where DNI=?");
             ps.setString(1, empleado.getDNI());
@@ -131,8 +130,27 @@ public class EmpleadoDAO {
         } catch (Exception e) {
             System.out.println(e);
         }
-        
+
         return verificar;
     }
-    
+
+    public boolean verificarColaboradorModificado(Empleado empleado) {
+        boolean verificar = true;
+
+        try {
+            PreparedStatement ps = Conexion.getConnection().prepareStatement("Select * from empleado where DNI=? and CodEmpleado=?");
+            ps.setString(1, empleado.getDNI());
+            ps.setInt(2, empleado.getCodEmpleado());
+            ResultSet rs = ps.executeQuery();
+            if (!rs.next()) {
+                verificar = verificarColaborador(empleado);
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return verificar;
+    }
+
 }
