@@ -8,7 +8,7 @@ public class Conexion {
     public static Connection getConnection() {
 
         Connection con = null;
-        String cadena = "jdbc:mysql://localhost/agroinversiones?user=root&password=";
+        String cadena = "jdbc:mysql://localhost/agroinversiones?user=root&password=userrod";
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
