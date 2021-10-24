@@ -91,4 +91,47 @@ public class ProductoDAO {
         
     }
 
+    public void actualizarStock(Producto producto, int cant) {
+        
+        try {
+            
+            producto = getProducto(producto);
+            producto.setStock(producto.getStock() - cant);
+            
+            PreparedStatement ps = Conexion.getConnection().prepareStatement("Update producto set Stock=? where CodProducto=?");
+            ps.setInt(1, producto.getStock());
+            ps.setInt(2, producto.getCodProducto());
+            
+            ps.executeUpdate();
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+    }
+
+    private Producto getProducto(Producto producto) {
+        
+        try {
+            
+            PreparedStatement ps = Conexion.getConnection().prepareStatement("Select * from producto where CodProducto=?");
+            ps.setInt(1, producto.getCodProducto());
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                producto.setCodProducto(rs.getInt(1));
+                producto.setCodCategoria(rs.getInt(2));
+                producto.setNombre(rs.getString(3));
+                producto.setStock(rs.getInt(4));
+                producto.setPrecio(rs.getDouble(5));
+                producto.setDescripcion(rs.getString(6));
+            }
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        return producto;
+    }
+
 }

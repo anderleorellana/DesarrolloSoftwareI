@@ -64,6 +64,7 @@ public class ProductoServlet extends HttpServlet {
                 producto = new Producto();
                 ArrayList<String> elista = new ArrayList<>();
                 producto.setImagen("none");
+                String img = request.getParameter("img").substring(22);
                 
                 try {
                     FileItemFactory file = new DiskFileItemFactory();
@@ -72,6 +73,8 @@ public class ProductoServlet extends HttpServlet {
                     for (int i = 0; i < items.size(); i++) {
                         FileItem fileItem = (FileItem) items.get(i);
                         if (!fileItem.isFormField()) {
+                            File r = new File("C:\\wamp64\\www\\imga\\"+img);
+                            r.delete();
                             File f = new File("C:\\wamp64\\www\\imga\\" + fileItem.getName());
                             fileItem.write(f);
                             producto.setImagen("http://localhost/imga/" + fileItem.getName());
@@ -97,7 +100,7 @@ public class ProductoServlet extends HttpServlet {
 
                 proDAO.modificarProducto(producto);
 
-                request.getRequestDispatcher("ProductoServlet?op=Viewer").forward(request, response);
+                response.sendRedirect("ProductoServlet?op=Viewer");
 
                 break;
                 

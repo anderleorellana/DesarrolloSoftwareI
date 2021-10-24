@@ -1,4 +1,4 @@
-<%@page import="Negocio.Empleado, java.util.ArrayList, Negocio.Producto;" %>
+<%@page import="Negocio.Empleado, Negocio.Orden, java.util.ArrayList;" %>
 <%
 
     Empleado emp = (Empleado) session.getAttribute("usuario");
@@ -7,7 +7,6 @@
     }
 
 %>
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -234,7 +233,7 @@
                         <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                             <i class="fa fa-bars"></i>
                         </button>
-
+                        
                         <div class="nav-header">
                             <a class="h4 text-decoration-none text-dark">
                                 AGROINVERSIONES ALEXIS S.A.C.
@@ -281,7 +280,7 @@
                     <div class="container-fluid">
                         <!-- Page Heading -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Registro de Productos</h1>
+                            <h1 class="h3 mb-0 text-gray-800">Registro de Pendientes</h1>
                             <a href="#" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                     class="fas fa-download fa-sm text-white-50"></i> Generar Reporte</a>
                         </div>
@@ -293,89 +292,14 @@
                                         <i class="fa-thin fa-house"></i>Dashboard
                                     </a>
                                 </li>
-                                <li class="breadcrumb-item active" aria-current="page">Productos</li>
+                                <li class="breadcrumb-item active" aria-current="page">Registro Pendientes</li>
                             </ol>
                         </nav>
-
-                        <div class="">
-                            <div class="mb-3">
-                                <button type="button" class="d-sm-inline-block btn btn-sm btn-success shadow-sm px-4"
-                                        data-toggle="modal" data-target="#AddProductoModal">Agregar</button>
-                            </div>
-                        </div>
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="AddProductoModal" tabindex="-1" role="dialog"
-                             aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Agregar Colaborador</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <form action="ProductoServlet?op=Add" method="post" enctype="multipart/form-data">
-                                        <!-- <input type="hidden" name="op" value="Add"> -->
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <input type="text" name="txtNombre" class="form-control" placeholder="Nombre Producto"
-                                                       required>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col">
-                                                    <input type="number" name="txtStock" class="form-control" min="0" placeholder="Stock"
-                                                           required>
-                                                </div>
-                                                <div class="form-group col">
-                                                    <input type="number" name="txtPrecio" class="form-control" min="0" step="0.01" placeholder="Precio S/."
-                                                           required>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <textarea name="txtDescripcion" class="form-control"
-                                                          placeholder="Descripcion Producto" id="exampleFormControlTextarea1"
-                                                          rows="3" required></textarea>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <select id="Area" name="txtCodCategoria" class="form-control" required>
-                                                    <option selected disabled>- Categoria -</option>
-                                                    <option value="101">Herbicidas</option>
-                                                    <option value="102">Fungicidas</option>
-                                                    <option value="103">Insecticidas</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
-                                                </div>
-                                                <div class="custom-file">
-                                                    <input type="file" name="txtImagen" class="custom-file-input"
-                                                           id="inputGroupFile01" aria-describedby="inputGroupFileAddon01"
-                                                           required>
-                                                    <label class="custom-file-label" for="inputGroupFile01">Choose
-                                                        Image</label>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-danger"
-                                                    data-dismiss="modal">Cerrar</button>
-                                            <input type="submit" class="btn btn-success" value="Agregar Producto">
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- DataTales Example -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Registro de Productos</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">Registro de Pendientes</h6>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -384,125 +308,49 @@
                                         <thead>
                                             <tr>
                                                 <th>Codigo</th>
-                                                <th>Producto</th>
-                                                <th>Stock</th>
-                                                <th>Precio</th>
-                                                <th>Categoria</th>
-                                                <th>Status</th>
+                                                <th>N° Documento Cliente</th>
+                                                <th>Fecha</th>
+                                                <th>Estado</th>
+                                                <th>Total</th>
                                                 <th>Acciones</th>
                                             </tr>
                                         </thead>
                                         <tfoot>
                                             <tr>
                                                 <th>Codigo</th>
-                                                <th>Producto</th>
-                                                <th>Stock</th>
-                                                <th>Precio</th>
-                                                <th>Categoria</th>
-                                                <th>Status</th>
+                                                <th>N° Documento Cliente</th>
+                                                <th>Fecha</th>
+                                                <th>Estado</th>
+                                                <th>Total</th>
                                                 <th>Acciones</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
                                             <%
-                                                ArrayList<Producto> lista = (ArrayList<Producto>) request.getAttribute("lpro");
-                                                for (Producto producto : lista) {
+                                                ArrayList<Orden> lista = (ArrayList<Orden>) request.getAttribute("lpen");
+                                                
+                                                for (Orden orden : lista) {
                                             %>
                                             <tr>
-                                                <td class="align-middle"><%=producto.getCodProducto()%></td>
+                                                <td class="align-middle"><%=orden.getCodPedido()%></td>
+                                                <td class="align-middle"><%=orden.getNum_Documento()%></td>
+                                                <td class="align-middle"><%=orden.getFecha()%></td>
+                                                <td class="align-middle"><%=orden.getEstado()%></td>
+                                                <td class="align-middle">S/.<%=orden.getTotal()%></td>
                                                 <td class="align-middle">
-                                                    <img style="width: 4.5rem;" src="<%=producto.getImagen()%>" alt="">
-                                                    <span><%=producto.getNombre()%></span>
-                                                </td>
-                                                <td class="align-middle"><%=producto.getStock()%></td>
-                                                <td class="align-middle">S/.<%=producto.getPrecio()%></td>
-                                                <td class="align-middle"><%=producto.getCategoria()%></td>
-                                                <td class="align-middle">
-                                                    <span class="badge bg-success text-white">Active</span>
-                                                </td>
-                                                <td class="align-middle">
-                                                    <a href="#" class="btn btn-outline-info">
-                                                        <i class="fa-duotone fa-eye" style="--fa-secondary-opacity: 1.0; --fa-primary-color: #2600ff; --fa-secondary-color: #eeeeee;"></i>
+                                                    <a href="CanastaServlet?op=Viewer&cli=<%=orden.getCodCliente()%>" class="btn btn-outline-info"><i class="fa-duotone fa-eye"
+                                                                                                style="--fa-secondary-opacity: 1.0; --fa-primary-color: #2600ff; --fa-secondary-color: #eeeeee;"></i></a>
+                                                    <a href="CanastaServlet?op=Clear&order=<%=orden.getCodPedido()%>" class="btn btn-outline-secondary">
+                                                        <i class="fa-duotone fa-cart-xmark" style="--fa-secondary-opacity: 1.0; --fa-primary-color: #ff9c2a; --fa-secondary-color: #d5f1f2;"></i>
                                                     </a>
-                                                    <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#EditproductoModal<%=producto.getCodProducto()%>">
-                                                        <i class="fa-duotone fa-pen-to-square" style="--fa-secondary-opacity: 1.0; --fa-primary-color: #ff9c2a; --fa-secondary-color: #2c2c2c;"></i>
-                                                    </button>
-                                                    <a href="ProductoServlet?op=Remove&codPro=<%=producto.getCodProducto()%>" class="btn btn-outline-danger">
-                                                        <i class="fa-duotone fa-trash" style="--fa-secondary-opacity: 1.0; --fa-primary-color: #2c2c2c; --fa-secondary-color: #707070;"></i>
-                                                    </a>
+                                                    <a href="CanastaServlet?op=Delete&order=<%=orden.getCodPedido()%>" class="btn btn-outline-danger"><i
+                                                            class="fa-duotone fa-trash"
+                                                            style="--fa-secondary-opacity: 1.0; --fa-primary-color: #2c2c2c; --fa-secondary-color: #707070;"></i></a>
                                                 </td>
                                             </tr>
-
-                                            <!-- Modal -->
-                                        <div class="modal fade" id="EditproductoModal<%=producto.getCodProducto()%>" tabindex="-1" role="dialog"
-                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Editar Producto</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <form action="ProductoServlet?op=Modify&img=<%=producto.getImagen()%>" method="post" enctype="multipart/form-data">
-                                                        <!-- <input type="hidden" name="op" value="Add"> -->
-                                                        <div class="modal-body">
-                                                            <div class="form-group">
-                                                                <input type="text" name="txtmNombre" value="<%=producto.getNombre()%>" class="form-control" placeholder="Nombre Producto"
-                                                                       required>
-                                                            </div>
-                                                            <div class="form-row">
-                                                                <div class="form-group col">
-                                                                    <input type="number" name="txtmStock" value="<%=producto.getStock()%>" class="form-control" min="0" placeholder="Stock"
-                                                                           required>
-                                                                </div>
-                                                                <div class="form-group col">
-                                                                    <input type="number" name="txtmPrecio" value="<%=producto.getPrecio()%>" class="form-control" min="0" step="0.01" placeholder="Precio S/."
-                                                                           required>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <textarea name="txtmDescripcion" class="form-control"
-                                                                          placeholder="Descripcion Producto" id="exampleFormControlTextarea1"
-                                                                          rows="3" required><%=producto.getDescripcion()%></textarea>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <select id="Area" name="txtmCodCategoria" class="form-control" required>
-                                                                    <option disabled>- Categoria -</option>
-                                                                    <option <%=(producto.getCategoria().equals("Herbicidas")) ? "selected" : ""%> value="101">Herbicidas</option>
-                                                                    <option <%=(producto.getCategoria().equals("Fungicidas")) ? "selected" : ""%> value="102">Fungicidas</option>
-                                                                    <option <%=(producto.getCategoria().equals("Insecticidas")) ? "selected" : ""%> value="103">Insecticidas</option>
-                                                                </select>
-                                                            </div>
-                                                            <input type="hidden" name="txtmCodProducto" value="<%=producto.getCodProducto()%>">
-                                                            <div class="input-group mb-3">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
-                                                                </div>
-                                                                <div class="custom-file">
-                                                                    <input type="file" name="txtmImagen" class="custom-file-input"
-                                                                           id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                                                                    <label class="custom-file-label" for="inputGroupFile01">Choose
-                                                                        Image</label>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-danger"
-                                                                    data-dismiss="modal">Cerrar</button>
-                                                            <input type="submit" class="btn btn-success" value="Modificar Producto">
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <%
-                                            }
-                                        %>
+                                            <%
+                                                }
+                                            %>
                                         </tbody>
                                     </table>
                                 </div>

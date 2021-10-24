@@ -107,14 +107,14 @@
                             <%                                if (emp.getCodArea() == 101) {
                             %>
                             <a class="collapse-item" href="historialVentas.jsp">Registro Ventas</a>
-                            <a class="collapse-item" href="realizarVenta.jsp">Realizar Venta</a>
+                            <a class="collapse-item" href="#" data-toggle="modal" data-target="#ModalVenta">Realizar Venta</a>
                             <a class="collapse-item" href="pagarVenta.jsp">Ventas por Pagar</a>
                             <a class="collapse-item" href="finalizarVenta.jsp">Ventas por Finalizar</a>
                             <%
                             } else if (emp.getCodArea() == 102) {
                             %>
                             <a class="collapse-item" href="historialVentas.jsp">Registro Ventas</a>
-                            <a class="collapse-item" href="realizarVenta.jsp">Realizar Venta</a>
+                            <a class="collapse-item" href="#" data-toggle="modal" data-target="#ModalVenta">Realizar Venta</a>
                             <%
                             } else if (emp.getCodArea() == 103) {
                             %>
@@ -132,6 +132,45 @@
                     </div>
                 </li>
 
+                <!-- Modal -->
+                <div class="modal fade" id="ModalVenta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Ingrese Cliente</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form action="ClienteServlet" method="get">
+                                <input type="hidden" name="op" value="Validar">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <input type="text" name="txtNumDoc" class="form-control" placeholder="N° Documento Cliente" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-success">Ingresar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <%
+                    if (emp.getCodArea() == 101 || emp.getCodArea() == 102) {
+                %>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="PendienteServlet?op=Viewer">
+                        <i class="fa-thin fa-folders"></i>
+                        <span>Pendientes</span></a>
+                </li>
+                <%
+                    }
+                %>
+                
                 <%
                     if (emp.getCodArea() == 101) {
                 %>
@@ -154,14 +193,14 @@
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="EmpleadoServlet?op=Viewer">
+                    <a class="nav-link" href="clientes.jsp">
                         <i class="fa-light fa-users"></i>
                         <span>Clientes</span></a>
                 </li>
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="colaboradores.jsp">
+                    <a class="nav-link" href="EmpleadoServlet?op=Viewer">
                         <i class="fa-light fa-user-helmet-safety"></i>
                         <span>Colaboradores</span></a>
                 </li>
